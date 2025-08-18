@@ -2,40 +2,51 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Github, ExternalLink } from "lucide-react";
+import { useToast } from "@/components/ui/use-toast";
 
 const Projects = () => {
+  const { toast } = useToast();
+
   const projects = [
     {
       id: 1,
-      title: "Primeiro Projeto",
-      description: "Descrição do seu primeiro projeto no GitHub. Aqui você pode descrever as funcionalidades principais e tecnologias utilizadas.",
-      technologies: ["React", "TypeScript", "CSS"],
-      githubUrl: "https://github.com/vitorgabriel/projeto1",
-      liveUrl: "https://projeto1.demo.com",
-      image: "/placeholder.svg"
+      title: "Engenharias",
+      description:
+        "Projeto inicial de aprendizagem, apresentado na feira de profissões da Etec de Registro em 2023.",
+      technologies: ["React", "JavaScript", "HTML/CSS"],
+      githubUrl: "https://github.com/vgmandira7/Engenharias",
+      liveUrl: "https://vgmandira7.github.io/Engenharias/",
+      image: "/assets/engenharia.png",
+      status: "Concluído",
     },
-    // Placeholder para projetos futuros
     {
       id: 2,
-      title: "Próximo Projeto",
-      description: "Este espaço está reservado para o seu próximo projeto incrível. Continue desenvolvendo!",
-      technologies: ["Em breve"],
-      githubUrl: "#",
+      title: "Luna",
+      description:
+        "Aplicativo mobile em desenvolvimento para auxiliar crianças com TDAH na escola. Construído com React Native e Expo.",
+      technologies: ["React Native", "Expo", "TypeScript"],
+      githubUrl: "https://github.com/vgmandira7/Luna",
       liveUrl: "#",
-      image: "/placeholder.svg",
-      isPlaceholder: true
+      image: "/assets/luna.png",
+      status: "Em desenvolvimento",
     },
     {
       id: 3,
       title: "Projeto Futuro",
-      description: "Mais um espaço esperando por seus projetos futuros. O céu é o limite!",
+      description: "Esperando por seus projetos futuros. O céu é o limite!",
       technologies: ["Em breve"],
       githubUrl: "#",
       liveUrl: "#",
       image: "/placeholder.svg",
-      isPlaceholder: true
-    }
+      status: "Em breve",
+      isPlaceholder: true,
+    },
   ];
+
+  // estilos padronizados para todos os status
+  const getStatusClass = () => {
+    return "bg-primary/10 text-white border border-primary/30 rounded-full px-3 py-1 text-sm";
+  };
 
   return (
     <section id="projects" className="py-20 px-4">
@@ -51,28 +62,33 @@ const Projects = () => {
 
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
           {projects.map((project) => (
-            <Card 
-              key={project.id} 
+            <Card
+              key={project.id}
               className={`card-gradient border-border/50 overflow-hidden group hover:shadow-glow transition-all duration-500 ${
-                project.isPlaceholder ? 'opacity-60' : 'hover:-translate-y-2'
+                project.isPlaceholder ? "opacity-60" : "hover:-translate-y-2"
               }`}
             >
+              {/* Área da imagem */}
               <div className="aspect-video bg-muted/20 relative overflow-hidden">
-                <div className="w-full h-full bg-gradient-to-br from-primary/20 to-accent/20 flex items-center justify-center">
-                  {project.isPlaceholder ? (
+                {project.isPlaceholder ? (
+                  <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-primary/20 to-accent/20">
                     <div className="text-muted-foreground text-sm">Em breve...</div>
-                  ) : (
-                    <div className="text-primary text-2xl font-bold">#{project.id}</div>
-                  )}
-                </div>
+                  </div>
+                ) : (
+                  <img
+                    src={project.image}
+                    alt={project.title}
+                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                  />
+                )}
               </div>
-              
+
               <CardHeader>
                 <CardTitle className="flex items-center justify-between">
                   {project.title}
                   {!project.isPlaceholder && (
-                    <Badge variant="secondary" className="bg-primary/10 border-primary/30">
-                      Ativo
+                    <Badge variant="secondary" className={getStatusClass()}>
+                      {project.status}
                     </Badge>
                   )}
                 </CardTitle>
@@ -80,23 +96,24 @@ const Projects = () => {
                   {project.description}
                 </CardDescription>
               </CardHeader>
-              
+
               <CardContent>
                 <div className="flex flex-wrap gap-2 mb-6">
                   {project.technologies.map((tech, index) => (
-                    <Badge 
-                      key={index} 
-                      variant="outline" 
+                    <Badge
+                      key={index}
+                      variant="outline"
                       className="text-xs border-primary/30"
                     >
                       {tech}
                     </Badge>
                   ))}
                 </div>
-                
+
                 <div className="flex gap-3">
-                  <Button 
-                    size="sm" 
+                  {/* Botão GitHub */}
+                  <Button
+                    size="sm"
                     variant="outline"
                     className="flex-1 border-primary/30 hover:bg-primary/10"
                     disabled={project.isPlaceholder}
@@ -108,29 +125,35 @@ const Projects = () => {
                         GitHub
                       </>
                     ) : (
-                      <a href={project.githubUrl} target="_blank" rel="noopener noreferrer">
+                      <a
+                        href={project.githubUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
                         <Github className="w-4 h-4 mr-2" />
                         GitHub
                       </a>
                     )}
                   </Button>
-                  <Button 
+
+                  {/* Botão Demo com toast */}
+                  <Button
                     size="sm"
                     className="flex-1 bg-primary hover:bg-primary/90"
-                    disabled={project.isPlaceholder}
-                    asChild={!project.isPlaceholder}
+                    onClick={() => {
+                      if (project.isPlaceholder || project.liveUrl === "#") {
+                        toast({
+                          title: "🚧 Em desenvolvimento",
+                          description:
+                            "Este projeto ainda não possui uma view disponível.",
+                        });
+                      } else {
+                        window.open(project.liveUrl, "_blank");
+                      }
+                    }}
                   >
-                    {project.isPlaceholder ? (
-                      <>
-                        <ExternalLink className="w-4 h-4 mr-2" />
-                        Demo
-                      </>
-                    ) : (
-                      <a href={project.liveUrl} target="_blank" rel="noopener noreferrer">
-                        <ExternalLink className="w-4 h-4 mr-2" />
-                        Demo
-                      </a>
-                    )}
+                    <ExternalLink className="w-4 h-4 mr-2" />
+                    View
                   </Button>
                 </div>
               </CardContent>
@@ -142,13 +165,17 @@ const Projects = () => {
           <p className="text-muted-foreground mb-4">
             Mais projetos em desenvolvimento...
           </p>
-          <Button 
+          <Button
             variant="outline"
             size="lg"
             className="border-primary/30 hover:bg-primary/10"
             asChild
           >
-            <a href="https://github.com/vitorgabriel" target="_blank" rel="noopener noreferrer">
+            <a
+              href="https://github.com/vgmandira7"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
               Ver todos no GitHub
             </a>
           </Button>

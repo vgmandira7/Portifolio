@@ -7,26 +7,26 @@ const Contact = () => {
     {
       icon: Mail,
       label: "Email",
-      value: "vitor@email.com",
-      link: "mailto:vitor@email.com"
+      value: "vg.mandira@gmail.com",
+      link: "mailto:vg.mandira@gmail.com"
     },
     {
       icon: Github,
       label: "GitHub",
-      value: "/vitorgabriel",
-      link: "https://github.com/vitorgabriel"
+      value: "/vgmandira7",
+      link: "https://github.com/vgmandira7"
     },
     {
       icon: Linkedin,
       label: "LinkedIn",
-      value: "/vitorgabriel",
-      link: "https://linkedin.com/in/vitorgabriel"
+      value: "/vgmandira",
+      link: "https://linkedin.com/in/vgmandira"
     },
     {
       icon: MapPin,
       label: "Localização",
-      value: "Registro, SP",
-      link: "#"
+      value: "Jacupiranga, SP",
+      link: "https://share.google/KJhDt2NpEKb88bp6x"
     }
   ];
 

@@ -3,8 +3,8 @@ import { Badge } from "@/components/ui/badge";
 
 const About = () => {
   const skills = [
-    "JavaScript", "TypeScript", "React", "Node.js", "Python", "Java",
-    "HTML/CSS", "Git/GitHub", "SQL", "MongoDB", "API REST"
+    "JavaScript", "TypeScript", "React Native", "Node.js", "Python", "Java",
+    "HTML/CSS", "Git/GitHub", "MySQL", "C", "C#", "Php", "Bootstrap"
   ];
 
   return (
@@ -25,8 +25,8 @@ const About = () => {
               <h3 className="text-2xl font-semibold mb-4 text-gradient">🎓 Formação Acadêmica</h3>
               <div className="space-y-4">
                 <div>
-                  <h4 className="font-semibold text-lg">Desenvolvimento de Software Multiplataforma</h4>
-                  <p className="text-muted-foreground">Fatecc - Registro, SP</p>
+                  <h4 className="font-semibold text-lg">Tecnólogo em Desenvolvimento de Software Multiplataforma</h4>
+                  <p className="text-muted-foreground">Fatec - Registro, SP</p>
                   <p className="text-sm text-accent">2º Semestre • Em andamento</p>
                 </div>
                 <div>
@@ -72,7 +72,7 @@ const About = () => {
               </Card>
               <Card className="card-gradient border-border/50 text-center p-6">
                 <CardContent className="p-0">
-                  <div className="text-3xl font-bold text-gradient">2+</div>
+                  <div className="text-3xl font-bold text-gradient">3+</div>
                   <p className="text-muted-foreground">Anos de Estudo</p>
                 </CardContent>
               </Card>
