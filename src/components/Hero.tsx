@@ -56,7 +56,7 @@ const Hero = () => {
               size="lg"
               className="border-primary/50 hover:bg-primary/10 transition-all duration-300"
             >
-              <a href="../../public/Curriculo.pdf" download="Curriculo-Vitor.pdf">
+              <a href="/Curriculo.pdf" download="Curriculo-Vitor.pdf">
                 Baixar CV
               </a>
             </Button>
