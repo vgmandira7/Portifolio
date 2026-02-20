@@ -1,62 +1,115 @@
+import { useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Github, ExternalLink } from "lucide-react";
+import { Github, ExternalLink, X } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
 
 const Projects = () => {
   const { toast } = useToast();
+  const [selectedProject, setSelectedProject] = useState<any>(null);
 
   const projects = [
     {
       id: 1,
       title: "Engenharias",
       description:
-        "Projeto inicial de aprendizagem, apresentado na feira de profissões da Etec de Registro em 2023.",
-      technologies: ["React", "JavaScript", "HTML/CSS"],
+        "Projeto web desenvolvido com foco em orientar estudantes na escolha profissional, reunindo informações sobre diferentes áreas da engenharia e as faculdades que oferecem esses cursos em uma interface simples e organizada. A aplicação foi apresentada na Feira de Profissões da ETEC de Registro em 2023, como um projeto inicial de aprendizagem voltado à prática de desenvolvimento web e organização de informações educacionais.",
+      technologies: ["JavaScript", "HTML/CSS"],
       githubUrl: "https://github.com/vgmandira7/Engenharias",
-      liveUrl: "https://vgmandira7.github.io/Engenharias/",
       image: "/assets/engenharia.png",
       status: "Concluído",
+      mockups: [
+        "/assets/engenharia.png",
+        "/assets/mockupEngenharia.png",
+      ],
     },
     {
       id: 2,
       title: "Luna",
       description:
-        "Aplicativo mobile em desenvolvimento para auxiliar crianças com TDAH na escola. Construído com React Native e Expo.",
-      technologies: ["React Native", "Expo", "TypeScript"],
+        "Aplicativo mobile educacional que está sendo desenvolvido para auxiliar crianças com TDAH no ambiente escolar, por meio da personalização de atividades e planos de aula com base no hiperfoco do aluno, tornando o aprendizado mais engajador, adaptado às necessidades individuais e com acompanhamento de desempenho por professores e responsáveis.",
+      technologies: ["React Native", "Expo", "TypeScript", "Python", "MongoDB"],
       githubUrl: "https://github.com/vgmandira7/Luna",
-      liveUrl: "#",
       image: "/assets/luna.png",
       status: "Em desenvolvimento",
+      mockups: [
+        "/assets/mockupLuna.png",
+        "/assets/mockupLuna2.png",
+        "/assets/mockupLuna3.png",
+        "/assets/mockupLuna4.png",
+      ],
     },
     {
       id: 3,
-      title: "Projeto Futuro",
-      description: "Esperando por seus projetos futuros. O céu é o limite!",
-      technologies: ["Em breve"],
-      githubUrl: "#",
-      liveUrl: "#",
-      image: "/placeholder.svg",
-      status: "Em breve",
-      isPlaceholder: true,
+      title: "FitVale",
+      description:
+        "Aplicativo mobile desenvolvido em equipe como Trabalho de Conclusão de Curso (TCC), voltado ao gerenciamento de academias, permitindo o controle de alunos, organização de aulas, montagem de treinos personalizados e comunicação com instrutores, oferecendo uma solução prática e completa para a administração e acompanhamento das atividades dentro do ambiente fitness.",
+      technologies: ["React Native", "Expo", "PHP", "SQL"],
+      githubUrl: "", // sem GitHub por enquanto
+      image: "/assets/fitvale.png",
+      status: "Concluído",
+      mockups: [
+        "/assets/mockupFitvale.png",
+        "/assets/mockupFitvale2.png",
+        "/assets/mockupFitvale3.png",
+        "/assets/mockupFitvale4.png",
+      ],
+    },
+    {
+      id: 4,
+      title: "Barbearia Mandira",
+      description:
+        "Sistema web de agendamento para barbearia, onde o barbeiro pode gerenciar cortes, horários e clientes, enquanto os usuários realizam agendamentos online.",
+      technologies: ["React", "Vite", "Node.js", "Express", "MongoDB"],
+      githubUrl: "https://github.com/vgmandira7/BarbeariaMandira.git", // também sem GitHub público
+      image: "/assets/barbearia.png",
+      status: "Em desenvolvimento",
+      mockups: [
+        "/assets/mockupBarbearia.png",
+        "/assets/mockupBarbearia2.png",
+        "/assets/mockupBarbearia3.png",
+        "/assets/mockupBarbearia4.png",
+      ],
     },
   ];
 
-  // estilos padronizados para todos os status
   const getStatusClass = () => {
     return "bg-primary/10 text-white border border-primary/30 rounded-full px-3 py-1 text-sm";
   };
 
+  const handleView = (project: any) => {
+    if (!project.mockups || project.mockups.length === 0) {
+      toast({
+        title: "Mockups em breve",
+        description: "As visualizações deste projeto serão adicionadas em breve.",
+      });
+      return;
+    }
+    setSelectedProject(project);
+  };
+
+  const handleGithubClick = (project: any) => {
+    if (!project.githubUrl || project.githubUrl === "#") {
+      toast({
+        title: "GitHub indisponível",
+        description: "Este projeto ainda não foi inserido no GitHub.",
+      });
+      return;
+    }
+
+    window.open(project.githubUrl, "_blank");
+  };
+
   return (
-    <section id="projects" className="py-20 px-4">
+    <section id="projects" className="py-20 px-4 relative">
       <div className="container mx-auto max-w-6xl">
         <div className="text-center mb-16">
           <h2 className="text-4xl md:text-5xl font-bold mb-4">
             Meus <span className="text-gradient">Projetos</span>
           </h2>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            Uma coleção dos meus trabalhos mais recentes e projetos em desenvolvimento
+            Uma coleção dos meus principais projetos e experiências práticas em desenvolvimento
           </p>
         </div>
 
@@ -64,33 +117,23 @@ const Projects = () => {
           {projects.map((project) => (
             <Card
               key={project.id}
-              className={`card-gradient border-border/50 overflow-hidden group hover:shadow-glow transition-all duration-500 ${
-                project.isPlaceholder ? "opacity-60" : "hover:-translate-y-2"
-              }`}
+              className="card-gradient border-border/50 overflow-hidden group hover:shadow-glow transition-all duration-500 hover:-translate-y-2"
             >
-              {/* Área da imagem */}
+              {/* Imagem */}
               <div className="aspect-video bg-muted/20 relative overflow-hidden">
-                {project.isPlaceholder ? (
-                  <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-primary/20 to-accent/20">
-                    <div className="text-muted-foreground text-sm">Em breve...</div>
-                  </div>
-                ) : (
-                  <img
-                    src={project.image}
-                    alt={project.title}
-                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                  />
-                )}
+                <img
+                  src={project.image}
+                  alt={project.title}
+                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                />
               </div>
 
               <CardHeader>
                 <CardTitle className="flex items-center justify-between">
                   {project.title}
-                  {!project.isPlaceholder && (
-                    <Badge variant="secondary" className={getStatusClass()}>
-                      {project.status}
-                    </Badge>
-                  )}
+                  <Badge variant="secondary" className={getStatusClass()}>
+                    {project.status}
+                  </Badge>
                 </CardTitle>
                 <CardDescription className="text-muted-foreground">
                   {project.description}
@@ -99,7 +142,7 @@ const Projects = () => {
 
               <CardContent>
                 <div className="flex flex-wrap gap-2 mb-6">
-                  {project.technologies.map((tech, index) => (
+                  {project.technologies.map((tech: string, index: number) => (
                     <Badge
                       key={index}
                       variant="outline"
@@ -111,46 +154,22 @@ const Projects = () => {
                 </div>
 
                 <div className="flex gap-3">
-                  {/* Botão GitHub */}
+                  {/* Botão GitHub com Toast */}
                   <Button
                     size="sm"
                     variant="outline"
                     className="flex-1 border-primary/30 hover:bg-primary/10"
-                    disabled={project.isPlaceholder}
-                    asChild={!project.isPlaceholder}
+                    onClick={() => handleGithubClick(project)}
                   >
-                    {project.isPlaceholder ? (
-                      <>
-                        <Github className="w-4 h-4 mr-2" />
-                        GitHub
-                      </>
-                    ) : (
-                      <a
-                        href={project.githubUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        <Github className="w-4 h-4 mr-2" />
-                        GitHub
-                      </a>
-                    )}
+                    <Github className="w-4 h-4 mr-2" />
+                    GitHub
                   </Button>
 
-                  {/* Botão Demo com toast */}
+                  {/* Botão View (abre mockups) */}
                   <Button
                     size="sm"
                     className="flex-1 bg-primary hover:bg-primary/90"
-                    onClick={() => {
-                      if (project.isPlaceholder || project.liveUrl === "#") {
-                        toast({
-                          title: "🚧 Em desenvolvimento",
-                          description:
-                            "Este projeto ainda não possui uma view disponível.",
-                        });
-                      } else {
-                        window.open(project.liveUrl, "_blank");
-                      }
-                    }}
+                    onClick={() => handleView(project)}
                   >
                     <ExternalLink className="w-4 h-4 mr-2" />
                     View
@@ -160,27 +179,36 @@ const Projects = () => {
             </Card>
           ))}
         </div>
-
-        <div className="text-center mt-12">
-          <p className="text-muted-foreground mb-4">
-            Mais projetos em desenvolvimento...
-          </p>
-          <Button
-            variant="outline"
-            size="lg"
-            className="border-primary/30 hover:bg-primary/10"
-            asChild
-          >
-            <a
-              href="https://github.com/vgmandira7"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Ver todos no GitHub
-            </a>
-          </Button>
-        </div>
       </div>
+
+      {/* MODAL DE MOCKUPS */}
+      {selectedProject && (
+        <div className="fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4">
+          <div className="bg-background max-w-4xl w-full rounded-2xl p-6 relative">
+            <button
+              onClick={() => setSelectedProject(null)}
+              className="absolute top-4 right-4 hover:text-red-500 transition"
+            >
+              <X size={28} />
+            </button>
+
+            <h3 className="text-2xl font-bold mb-6 text-center">
+              {selectedProject.title} - Mockups
+            </h3>
+
+            <div className="grid md:grid-cols-2 gap-4">
+              {selectedProject.mockups.map((img: string, index: number) => (
+                <img
+                  key={index}
+                  src={img}
+                  alt={`Mockup ${index + 1}`}
+                  className="rounded-xl border border-border object-cover w-full"
+                />
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
     </section>
   );
 };
